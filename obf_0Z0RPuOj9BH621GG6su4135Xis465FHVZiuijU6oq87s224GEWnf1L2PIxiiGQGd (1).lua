@@ -1,1 +1,473 @@
-do local v0=loadstring(game:HttpGet("https://sirius.menu/rayfield"))();local v1=game:GetService("Players");local v2=game:GetService("UserInputService");local v3=game:GetService("RunService");local v4=game:GetService("Debris");local v5=game:GetService("TeleportService");local v6=workspace.CurrentCamera;local v7=v1.LocalPlayer;local v8=v7.Character or v7.CharacterAdded:Wait() ;local v9={Enabled=false,Speed=14 + 36 ,Gyro=nil,Velocity=nil,Connection=nil,Keys={W=false,A=false,S=false,D=false},InputBegan=nil,InputEnded=nil};local v10={Enabled=false};local v11={Enabled=false,Connection=nil};local v12={Enabled=false,Connection=nil};local v13=35 -19 ;local v14=34 + 16 ;local v15=false;local v16={Enabled=false,Objects={},Updater=nil};local v17={Enabled=false,FOV=148 -48 ,Smoothness=0.5 + 0 ,Part="Head",Connection=nil,Prediction=166.1 -(122 + 44) };local v18=nil;function startFlight(v31) local v32=0 -0 ;local v33;local v34;while true do if (v32==(2 + 0)) then v9.Velocity=Instance.new("BodyVelocity");v9.Velocity.MaxForce=Vector3.new(math.huge,math.huge,math.huge);v9.Velocity.Velocity=Vector3.zero;v9.Velocity.Parent=v33;v32=6 -3 ;end if (v32==(1413 -(447 + 966))) then if ( not v31 or  not v31:FindFirstChild("HumanoidRootPart")) then return;end v33=v31.HumanoidRootPart;v34=v31:FindFirstChild("Humanoid");if v34 then v34.PlatformStand=true;end v32=1 -0 ;end if (v32==(66 -(30 + 35))) then v9.Gyro=Instance.new("BodyGyro");v9.Gyro.MaxTorque=Vector3.new(math.huge,math.huge,math.huge);v9.Gyro.CFrame=v33.CFrame;v9.Gyro.Parent=v33;v32=2 + 0 ;end if (v32==(8 -5)) then v9.InputBegan=v2.InputBegan:Connect(function(v199,v200) if v200 then return;end if (v199.KeyCode==Enum.KeyCode.W) then v9.Keys.W=true;elseif (v199.KeyCode==Enum.KeyCode.A) then v9.Keys.A=true;elseif (v199.KeyCode==Enum.KeyCode.S) then v9.Keys.S=true;elseif (v199.KeyCode==Enum.KeyCode.D) then v9.Keys.D=true;end end);v9.InputEnded=v2.InputEnded:Connect(function(v201) if (v201.KeyCode==Enum.KeyCode.W) then v9.Keys.W=false;elseif (v201.KeyCode==Enum.KeyCode.A) then v9.Keys.A=false;elseif (v201.KeyCode==Enum.KeyCode.S) then v9.Keys.S=false;elseif (v201.KeyCode==Enum.KeyCode.D) then v9.Keys.D=false;end end);v9.Connection=v3.RenderStepped:Connect(function() if ( not v9.Enabled or  not v9.Gyro or  not v9.Velocity) then local v235=1257 -(1043 + 214) ;while true do if (v235==(0 -0)) then if v9.Connection then v9.Connection:Disconnect();end return;end end end local v202=v6;if v202 then v9.Gyro.CFrame=v202.CFrame;end local v203=Vector3.zero;local v204=v202.CFrame.LookVector;local v205=v202.CFrame.RightVector;if v9.Keys.W then v203+=v204 end if v9.Keys.S then v203-=v204 end if v9.Keys.A then v203-=v205 end if v9.Keys.D then v203+=v205 end if (v203.Magnitude>(1817 -(1703 + 114))) then v9.Velocity.Velocity=v203.Unit * v9.Speed ;else v9.Velocity.Velocity=Vector3.zero;end end);break;end end end function stopFlight() if v9.Gyro then v9.Gyro:Destroy();end if v9.Velocity then v9.Velocity:Destroy();end if v9.Connection then v9.Connection:Disconnect();end if v9.InputBegan then v9.InputBegan:Disconnect();end if v9.InputEnded then v9.InputEnded:Disconnect();end v9.Gyro,v9.Velocity,v9.Connection,v9.InputBegan,v9.InputEnded=nil,nil,nil,nil,nil;v9.Keys={W=false,A=false,S=false,D=false};if (v8 and v8:FindFirstChild("Humanoid")) then v8.Humanoid.PlatformStand=false;end end function toggleFlight() v9.Enabled= not v9.Enabled;if v9.Enabled then startFlight(v8);else stopFlight();end end function applyInvisibility(v42) local v43=701 -(376 + 325) ;while true do if (v43==(0 -0)) then if  not v42 then return;end for v206,v207 in ipairs(v42:GetDescendants()) do if (v207:IsA("BasePart") and (v207.Transparency<(2 -1))) then local v241=0 + 0 ;while true do if (v241==(0 -0)) then v207.Transparency=1 + 0 ;v207.CanCollide=false;break;end end end end break;end end end function removeInvisibility(v44) local v45=14 -(9 + 5) ;while true do if (v45==0) then if  not v44 then return;end for v208,v209 in ipairs(v44:GetDescendants()) do if v209:IsA("BasePart") then local v242=376 -(85 + 291) ;while true do if (v242==(1265 -(243 + 1022))) then v209.Transparency=0 -0 ;v209.CanCollide=true;break;end end end end break;end end end function applyGodmode(v46) local v47=0 + 0 ;local v48;while true do if (v47==(2 + 0)) then v11.Connection=v48.HealthChanged:Connect(function() if (v11.Enabled and (v48.Health<v48.MaxHealth)) then v48.Health=v48.MaxHealth;end end);break;end if (v47==(1180 -(1123 + 57))) then if ( not v46 or  not v46:FindFirstChild("Humanoid")) then return;end v48=v46.Humanoid;v47=1;end if (v47==(1 + 0)) then v48.MaxHealth=1000253 -(163 + 91) ;v48.Health=1001929 -(1869 + 61) ;v47=1 + 1 ;end end end function removeGodmode(v49) local v50=0 -0 ;while true do if (v50==(0 -0)) then if v11.Connection then v11.Connection:Disconnect();v11.Connection=nil;end if (v49 and v49:FindFirstChild("Humanoid")) then local v221=0 + 0 ;local v222;while true do if (v221==(0 -0)) then v222=v49.Humanoid;v222.MaxHealth=137 -37 ;v221=1 + 0 ;end if ((1475 -(1329 + 145))==v221) then v222.Health=1071 -(140 + 831) ;break;end end end break;end end end local function v19(v51) local v52=1850 -(1409 + 441) ;local v53;while true do if ((720 -(15 + 703))==v52) then v53.Tracer.Thickness=1 + 0 ;v53.NameTag.Visible=false;v53.NameTag.Color=Color3.fromRGB(660 -(118 + 287) ,693 -(262 + 176) ,1976 -(345 + 1376) );v53.NameTag.Size=1135 -(118 + 1003) ;v52=691 -(198 + 490) ;end if (v52==(13 -10)) then v53.NameTag.Center=true;v53.NameTag.Outline=true;v16.Objects[v51]=v53;break;end if (v52==0) then if v16.Objects[v51] then return;end v53={Box=Drawing.new("Square"),Tracer=Drawing.new("Line"),NameTag=Drawing.new("Text")};v53.Box.Visible=false;v53.Box.Color=Color3.fromRGB(611 -356 ,1461 -(696 + 510) ,56 + 199 );v52=1 -0 ;end if (v52==(1263 -(1091 + 171))) then v53.Box.Thickness=1 + 1 ;v53.Box.Filled=false;v53.Tracer.Visible=false;v53.Tracer.Color=Color3.fromRGB(802 -547 ,845 -590 ,629 -(123 + 251) );v52=9 -7 ;end end end local function v20(v54) local v55=698 -(208 + 490) ;local v56;while true do if (v55==(0 + 0)) then v56=v16.Objects[v54];if v56 then local v223=0 + 0 ;while true do if (v223==(837 -(660 + 176))) then v56.NameTag:Remove();v16.Objects[v54]=nil;break;end if (v223==(0 + 0)) then v56.Box:Remove();v56.Tracer:Remove();v223=1;end end end break;end end end local function v21() local function v57() for v122,v123 in ipairs(v1:GetPlayers()) do if (v123==v7) then continue;end local v124=v123.Character;if ( not v124 or  not v124:FindFirstChild("Head")) then local v210=202 -(14 + 188) ;while true do if (v210==(0 -0)) then v20(v123);continue;break;end end end if  not v124:FindFirstChild("HumanoidRootPart") then local v211=0;while true do if (v211==(675 -(534 + 141))) then wait(0.1 + 0 );if  not v124:FindFirstChild("HumanoidRootPart") then v20(v123);continue;end break;end end end v19(v123);local v125=v124.HumanoidRootPart;local v126=v124.Head;local v127,v128=v6:WorldToViewportPoint(v125.Position);local v129,v130=v6:WorldToViewportPoint(v126.Position + Vector3.new(0,2 + 0 ,0 + 0 ) );local v131,v122=v6:WorldToViewportPoint(v125.Position-Vector3.new(0 -0 ,4 -1 ,0 -0 ) );local v132=v16.Objects[v123];if  not v132 then continue;end if ( not v128 and  not v130) then local v212=0 -0 ;while true do if (v212==(1 + 0)) then v132.NameTag.Visible=false;continue;break;end if (v212==0) then v132.Box.Visible=false;v132.Tracer.Visible=false;v212=1 + 0 ;end end end local v133=math.abs(v129.Y-v131.Y );local v134=v133/(398 -(115 + 281)) ;v132.Box.Size=Vector2.new(v134,v133);v132.Box.Position=Vector2.new(v129.X-(v134/(4 -2)) ,v129.Y);v132.Box.Visible=true;v132.Tracer.From=Vector2.new(v6.ViewportSize.X/(2 + 0) ,v6.ViewportSize.Y);v132.Tracer.To=Vector2.new(v127.X,v127.Y);v132.Tracer.Visible=true;v132.NameTag.Text=v123.Name   .. " ["   .. math.floor((v125.Position-v6.CFrame.Position).Magnitude)   .. "m]" ;v132.NameTag.Position=Vector2.new(v129.X,v129.Y-(17 + 3) );v132.NameTag.Visible=true;end for v144,v145 in pairs(v16.Objects) do if  not v1:FindFirstChild(v144.Name) then v20(v144);end end end v16.Updater=v3.RenderStepped:Connect(function() if v16.Enabled then v57();end end);end function toggleESP(v59) local v60=0;while true do if (v60==(0 -0)) then v16.Enabled=v59;if v59 then if  not v16.Updater then v21();end else if v16.Updater then local v258=0 -0 ;while true do if (v258==(0 -0)) then v16.Updater:Disconnect();v16.Updater=nil;break;end end end for v245,v246 in pairs(v16.Objects) do if v246.Box then v246.Box:Remove();end if v246.Tracer then v246.Tracer:Remove();end if v246.NameTag then v246.NameTag:Remove();end end v16.Objects={};end break;end end end function startAimbot() v17.Connection=v3.RenderStepped:Connect(function() if ( not v17.Enabled or  not v8 or  not v8:FindFirstChild("HumanoidRootPart")) then return;end local v108=nil;local v109=math.huge;local v110=Vector2.new(v6.ViewportSize.X/(869 -(550 + 317)) ,v6.ViewportSize.Y/2 );local v111=v17.FOV/(2 -0) ;for v146,v147 in ipairs(v1:GetPlayers()) do local v148=336 -(144 + 192) ;local v149;local v150;local v151;local v152;while true do if (v148==(216 -(42 + 174))) then if (v147==v7) then continue;end v149=v147.Character;v148=1 -0 ;end if ((1 + 0)==v148) then if ( not v149 or  not v149:FindFirstChild(v17.Part)) then continue;end v150=v149[v17.Part];v148=1 + 1 ;end if (v148==(5 -3)) then v151,v152=v6:WorldToViewportPoint(v150.Position);if v152 then local v259=(Vector2.new(v151.X,v151.Y) -v110).Magnitude;if ((v259<=v111) and (v259<v109)) then local v272=285 -(134 + 151) ;while true do if (v272==(1665 -(970 + 695))) then v109=v259;v108=v150;break;end end end end break;end end end if v108 then local v187=0 -0 ;local v188;while true do if (v187==(1991 -(582 + 1408))) then v6.CFrame=v6.CFrame:Lerp(CFrame.new(v6.CFrame.Position,v188),v17.Smoothness);break;end if (v187==(0 -0)) then v188=v108.Position;if ((v17.Prediction>(0 + 0)) and v108.Velocity) then v188=v188 + (v108.Velocity * v17.Prediction) ;end v187=1 -0 ;end end end end);end function toggleAimbot(v62) local v63=0 -0 ;while true do if (v63==(1824 -(1195 + 629))) then v17.Enabled=v62;if v62 then startAimbot();elseif v17.Connection then v17.Connection:Disconnect();end break;end end end function setInfiniteJump(v64) local v65=0 -0 ;while true do if (v65==(241 -(187 + 54))) then v12.Enabled=v64;if v64 then v12.Connection=v2.JumpRequest:Connect(function() local v249=780 -(162 + 618) ;local v250;local v251;while true do if (v249==(1 + 0)) then v251=v250:GetState();if ((v251==Enum.HumanoidStateType.Landed) or (v251==Enum.HumanoidStateType.Running) or (v251==Enum.HumanoidStateType.Freefall)) then v250:ChangeState(Enum.HumanoidStateType.Jumping);end break;end if (v249==(0 + 0)) then if ( not v8 or  not v8:FindFirstChild("Humanoid")) then return;end v250=v8.Humanoid;v249=1 -0 ;end end end);elseif v12.Connection then v12.Connection:Disconnect();end break;end end end v7.CharacterAdded:Connect(function(v66) v8=v66;wait(0.5 -0 );if v9.Enabled then stopFlight();startFlight(v66);end if v10.Enabled then applyInvisibility(v66);end if v11.Enabled then if v11.Connection then v11.Connection:Disconnect();end applyGodmode(v66);end if v66:FindFirstChild("Humanoid") then local v153=0 + 0 ;while true do if (v153==(1636 -(1373 + 263))) then v66.Humanoid.WalkSpeed=v13;v66.Humanoid.JumpPower=v14;break;end end end end);local v22=v0:CreateWindow({Name="Ryzen Hub Premium",Icon=4483346998 -(451 + 549) ,LoadingTitle="Ryzen Hub",LoadingSubtitle="by Ryzen",Theme="DarkBlue",DisableRayfieldPrompts=false,DisableBuildWarnings=false,ConfigurationSaving={Enabled=true,FolderName="RyzenHubPremium",FileName="Config"},Discord={Enabled=false},KeySystem=false});local v23=v22:CreateTab("🏃 Movement");v23:CreateSection("✈️ Flight");v23:CreateToggle({Name="Flight",CurrentValue=false,Callback=function(v67) v9.Enabled=v67;if v67 then startFlight(v8);else stopFlight();end end});v23:CreateSlider({Name="Flight Speed",Range={0 -0 ,1507 -1007 },Increment=314 -(244 + 60) ,Suffix="studs/s",CurrentValue=1434 -(746 + 638) ,Callback=function(v69) v9.Speed=v69;end});v23:CreateSection("🏃 Player");v23:CreateSlider({Name="WalkSpeed",Range={1001 -(938 + 63) ,303 -103 },Increment=1,Suffix="studs/s",CurrentValue=16,Callback=function(v71) local v72=0;while true do if (v72==(0 + 0)) then v13=v71;if (v8 and v8:FindFirstChild("Humanoid")) then v8.Humanoid.WalkSpeed=v71;end break;end end end});v23:CreateSlider({Name="JumpPower",Range={1581 -(1535 + 46) ,500},Increment=1 + 0 ,Suffix="power",CurrentValue=610 -(306 + 254) ,Callback=function(v73) local v74=0;while true do if (v74==(0 + 0)) then v14=v73;if (v8 and v8:FindFirstChild("Humanoid")) then v8.Humanoid.JumpPower=v73;end break;end end end});v23:CreateToggle({Name="Infinite Jump",CurrentValue=false,Callback=function(v75) setInfiniteJump(v75);end});local v24=v22:CreateTab("👁️ Visuals");v24:CreateSection("ESP");v24:CreateToggle({Name="ESP",CurrentValue=false,Callback=function(v76) toggleESP(v76);end});v24:CreateToggle({Name="Boxes",CurrentValue=true,Callback=function(v77) for v112,v113 in pairs(v16.Objects) do v113.Box.Visible=v77 and v16.Enabled ;end end});v24:CreateToggle({Name="Tracers",CurrentValue=true,Callback=function(v78) for v115,v116 in pairs(v16.Objects) do v116.Tracer.Visible=v78 and v16.Enabled ;end end});v24:CreateToggle({Name="Names",CurrentValue=true,Callback=function(v79) for v118,v119 in pairs(v16.Objects) do v119.NameTag.Visible=v79 and v16.Enabled ;end end});v24:CreateSection("Character");v24:CreateToggle({Name="Invisibility",CurrentValue=false,Callback=function(v80) local v81=0 -0 ;while true do if (v81==(1467 -(899 + 568))) then v10.Enabled=v80;if v80 then applyInvisibility(v8);else removeInvisibility(v8);end break;end end end});v24:CreateToggle({Name="Godmode (999k HP)",CurrentValue=false,Callback=function(v82) v11.Enabled=v82;if v82 then applyGodmode(v8);else removeGodmode(v8);end end});v24:CreateToggle({Name="Noclip",CurrentValue=false,Callback=function(v84) local v85=0 + 0 ;while true do if (v85==(0 -0)) then v15=v84;if v8 then for v252,v253 in ipairs(v8:GetDescendants()) do if v253:IsA("BasePart") then v253.CanCollide= not v84;end end end break;end end end});local v25=v22:CreateTab("🎯 Aimbot");v25:CreateSection("Aim");v25:CreateToggle({Name="Aimbot",CurrentValue=false,Callback=function(v86) toggleAimbot(v86);end});v25:CreateSlider({Name="FOV",Range={1885 -(157 + 1718) ,1064 -764 },Increment=608 -(268 + 335) ,Suffix="px",CurrentValue=341 -241 ,Callback=function(v87) v17.FOV=v87;end});v25:CreateSlider({Name="Smoothness",Range={1018.1 -(697 + 321) ,573 -(426 + 146) },Increment=0.1 -0 ,Suffix="smooth",CurrentValue=0.5 + 0 ,Callback=function(v89) v17.Smoothness=v89;end});v25:CreateSlider({Name="Prediction",Range={0,811.5 -(569 + 242) },Increment=0.05,Suffix="s",CurrentValue=1227.1 -(322 + 905) ,Callback=function(v91) v17.Prediction=v91;end});v25:CreateDropdown({Name="Target Part",Options={"Head","HumanoidRootPart","UpperTorso","LowerTorso"},CurrentOption="Head",Callback=function(v93) v17.Part=v93;end});local v26=v22:CreateTab("🎭 Trolling");v26:CreateSection("Target Player");local function v27() local v95=947 -(245 + 702) ;local v96;while true do if (v95==(0 -0)) then v96={};for v213,v214 in ipairs(v1:GetPlayers()) do if (v214~=v7) then table.insert(v96,v214.Name);end end v95=1 + 0 ;end if ((1025 -(706 + 318))==v95) then if ( #v96==(1898 -(260 + 1638))) then v96={"No players"};end return v96;end end end local v28=v26:CreateDropdown({Name="Select Player",Options=v27(),CurrentOption="No players",Callback=function(v97) v18=((v97~="No players") and v1:FindFirstChild(v97)) or nil ;end});v26:CreateButton({Name="Refresh List",Callback=function() v28:Refresh(v27(),true);end});v26:CreateButton({Name="Teleport to Player",Callback=function() local v98=1251 -(721 + 530) ;local v99;local v100;while true do if (v98==(1272 -(945 + 326))) then v100=v18.Character.HumanoidRootPart.CFrame + Vector3.new(0 -0 ,3 + 0 ,1205 -(902 + 303) ) ;v99.CFrame=v100;v98=702 -(271 + 429) ;end if (v98==(0 + 0)) then if ( not v18 or  not v18.Character or  not v8 or  not v8:FindFirstChild("HumanoidRootPart")) then return;end v99=v8.HumanoidRootPart;v98=1501 -(1408 + 92) ;end if (v98==(1088 -(461 + 625))) then v3.Heartbeat:Wait();v99.CFrame=v100;break;end end end});v26:CreateButton({Name="Spin Fling",Callback=function() local v101=1288 -(993 + 295) ;local v102;local v103;while true do if ((1 + 1)==v101) then v102.CFrame=v103;break;end if (v101==(1172 -(418 + 753))) then v103=v102.CFrame;for v215=1 + 0 ,4 + 26  do local v216=0 -0 ;while true do if (v216==(0 + 0)) then v102.CFrame=v103 * CFrame.Angles(0,math.rad((4 + 8) * v215 ),562 -(334 + 228) ) ;v3.RenderStepped:Wait();break;end end end v101=531 -(406 + 123) ;end if (v101==(1769 -(1749 + 20))) then if ( not v18 or  not v18.Character or  not v18.Character:FindFirstChild("HumanoidRootPart")) then return;end v102=v18.Character.HumanoidRootPart;v101=1 + 0 ;end end end});v26:CreateButton({Name="Bring All",Callback=function() local v104=1322 -(1249 + 73) ;local v105;while true do if (v104==(236 -(141 + 95))) then if ( not v8 or  not v8:FindFirstChild("HumanoidRootPart")) then return;end v105=v8.HumanoidRootPart.CFrame;v104=1 + 0 ;end if (v104==(1146 -(466 + 679))) then for v217,v218 in ipairs(v1:GetPlayers()) do if ((v218~=v7) and v218.Character and v218.Character:FindFirstChild("HumanoidRootPart")) then v218.Character.HumanoidRootPart.CFrame=v105 + Vector3.new(math.random( -(4 -2),5 -3 ),1900 -(106 + 1794) ,math.random( -(1 + 1),1 + 1 )) ;end end break;end end end});local v29=v22:CreateTab("🔧 Misc");v29:CreateSection("Server");v29:CreateButton({Name="Rejoin",Callback=function() v5:TeleportToPlaceInstance(game.PlaceId,game.JobId,v7);end});v29:CreateButton({Name="Server Hop",Callback=function() v5:Teleport(game.PlaceId);end});v29:CreateSection("Utility");v29:CreateToggle({Name="Anti-AFK",CurrentValue=false,Callback=function(v106) if v106 then _G.antiAFK=v3.Stepped:Connect(function() if (v8 and v8:FindFirstChild("Humanoid")) then v8.Humanoid.MoveDirection=Vector3.new(2 -1 ,0 -0 ,0 + 0 );end end);elseif _G.antiAFK then _G.antiAFK:Disconnect();end end});local v30=v22:CreateTab("⚙️ Settings");v30:CreateSection("Keybinds");v30:CreateKeybind({Name="Flight Toggle",CurrentKeybind="F",Hold=false,Callback=function() toggleFlight();end});v30:CreateSection("Theme");v30:CreateDropdown({Name="Select Theme",Options={"Default","DarkBlue","Light","Red","Green","Purple"},CurrentOption="DarkBlue",Callback=function(v107) end});v0:Notify("Ryzen Hub Premium","Loaded successfully!",4483346101 -(17 + 86) ); end
+-- Ryzen Hub Premium | Rayfield UI | Full Features & Persistence
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local Players = game:GetService("Players")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Debris = game:GetService("Debris")
+local TeleportService = game:GetService("TeleportService")
+local Camera = workspace.CurrentCamera
+
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Состояния
+local Flight = {
+    Enabled = false, Speed = 50, Gyro = nil, Velocity = nil, Connection = nil,
+    Keys = { W = false, A = false, S = false, D = false },
+    InputBegan = nil, InputEnded = nil
+}
+local Invisible = { Enabled = false }
+local Godmode = { Enabled = false, Connection = nil }
+local InfiniteJump = { Enabled = false, Connection = nil }
+local WalkSpeed = 16
+local JumpPower = 50
+local Noclip = false
+
+local ESP = { Enabled = false, Objects = {}, Updater = nil }
+local Aimbot = {
+    Enabled = false, FOV = 100, Smoothness = 0.5, Part = "Head",
+    Connection = nil, Prediction = 0.1
+}
+local selectedPlayer = nil
+
+-- ===================== ФУНКЦИИ ПОЛЁТА =====================
+function startFlight(char)
+    if not char or not char:FindFirstChild("HumanoidRootPart") then return end
+    local root = char.HumanoidRootPart
+    local hum = char:FindFirstChild("Humanoid")
+    if hum then hum.PlatformStand = true end
+
+    Flight.Gyro = Instance.new("BodyGyro")
+    Flight.Gyro.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
+    Flight.Gyro.CFrame = root.CFrame
+    Flight.Gyro.Parent = root
+
+    Flight.Velocity = Instance.new("BodyVelocity")
+    Flight.Velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+    Flight.Velocity.Velocity = Vector3.zero
+    Flight.Velocity.Parent = root
+
+    Flight.InputBegan = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if gameProcessed then return end
+        if input.KeyCode == Enum.KeyCode.W then Flight.Keys.W = true
+        elseif input.KeyCode == Enum.KeyCode.A then Flight.Keys.A = true
+        elseif input.KeyCode == Enum.KeyCode.S then Flight.Keys.S = true
+        elseif input.KeyCode == Enum.KeyCode.D then Flight.Keys.D = true
+        end
+    end)
+    Flight.InputEnded = UserInputService.InputEnded:Connect(function(input)
+        if input.KeyCode == Enum.KeyCode.W then Flight.Keys.W = false
+        elseif input.KeyCode == Enum.KeyCode.A then Flight.Keys.A = false
+        elseif input.KeyCode == Enum.KeyCode.S then Flight.Keys.S = false
+        elseif input.KeyCode == Enum.KeyCode.D then Flight.Keys.D = false
+        end
+    end)
+
+    Flight.Connection = RunService.RenderStepped:Connect(function()
+        if not Flight.Enabled or not Flight.Gyro or not Flight.Velocity then
+            if Flight.Connection then Flight.Connection:Disconnect() end
+            return
+        end
+        local cam = Camera
+        if cam then Flight.Gyro.CFrame = cam.CFrame end
+        local moveVec = Vector3.zero
+        local forward = cam.CFrame.LookVector
+        local right = cam.CFrame.RightVector
+        if Flight.Keys.W then moveVec += forward end
+        if Flight.Keys.S then moveVec -= forward end
+        if Flight.Keys.A then moveVec -= right end
+        if Flight.Keys.D then moveVec += right end
+        if moveVec.Magnitude > 0 then
+            Flight.Velocity.Velocity = moveVec.Unit * Flight.Speed
+        else
+            Flight.Velocity.Velocity = Vector3.zero
+        end
+    end)
+end
+
+function stopFlight()
+    if Flight.Gyro then Flight.Gyro:Destroy() end
+    if Flight.Velocity then Flight.Velocity:Destroy() end
+    if Flight.Connection then Flight.Connection:Disconnect() end
+    if Flight.InputBegan then Flight.InputBegan:Disconnect() end
+    if Flight.InputEnded then Flight.InputEnded:Disconnect() end
+    Flight.Gyro, Flight.Velocity, Flight.Connection, Flight.InputBegan, Flight.InputEnded = nil, nil, nil, nil, nil
+    Flight.Keys = { W = false, A = false, S = false, D = false }
+    if Character and Character:FindFirstChild("Humanoid") then
+        Character.Humanoid.PlatformStand = false
+    end
+end
+
+function toggleFlight()
+    Flight.Enabled = not Flight.Enabled
+    if Flight.Enabled then startFlight(Character) else stopFlight() end
+end
+
+-- ===================== НЕВИДИМОСТЬ =====================
+function applyInvisibility(char)
+    if not char then return end
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") and part.Transparency < 1 then
+            part.Transparency = 1
+            part.CanCollide = false
+        end
+    end
+end
+
+function removeInvisibility(char)
+    if not char then return end
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.Transparency = 0
+            part.CanCollide = true
+        end
+    end
+end
+
+-- ===================== GODMODE =====================
+function applyGodmode(char)
+    if not char or not char:FindFirstChild("Humanoid") then return end
+    local hum = char.Humanoid
+    hum.MaxHealth = 999999
+    hum.Health = 999999
+    Godmode.Connection = hum.HealthChanged:Connect(function()
+        if Godmode.Enabled and hum.Health < hum.MaxHealth then
+            hum.Health = hum.MaxHealth
+        end
+    end)
+end
+
+function removeGodmode(char)
+    if Godmode.Connection then Godmode.Connection:Disconnect(); Godmode.Connection = nil end
+    if char and char:FindFirstChild("Humanoid") then
+        local hum = char.Humanoid
+        hum.MaxHealth = 100
+        hum.Health = 100
+    end
+end
+
+-- ===================== ESP =====================
+local function createEspForPlayer(player)
+    if ESP.Objects[player] then return end
+    local obj = {
+        Box = Drawing.new("Square"),
+        Tracer = Drawing.new("Line"),
+        NameTag = Drawing.new("Text"),
+    }
+    obj.Box.Visible = false
+    obj.Box.Color = Color3.fromRGB(255, 255, 255)
+    obj.Box.Thickness = 2
+    obj.Box.Filled = false
+
+    obj.Tracer.Visible = false
+    obj.Tracer.Color = Color3.fromRGB(255, 255, 255)
+    obj.Tracer.Thickness = 1
+
+    obj.NameTag.Visible = false
+    obj.NameTag.Color = Color3.fromRGB(255, 255, 255)
+    obj.NameTag.Size = 14
+    obj.NameTag.Center = true
+    obj.NameTag.Outline = true
+
+    ESP.Objects[player] = obj
+end
+
+local function removeEspForPlayer(player)
+    local obj = ESP.Objects[player]
+    if obj then
+        obj.Box:Remove()
+        obj.Tracer:Remove()
+        obj.NameTag:Remove()
+        ESP.Objects[player] = nil
+    end
+end
+
+local function updateESP()
+    local function updatePositions()
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player == LocalPlayer then continue end
+            local char = player.Character
+            if not char or not char:FindFirstChild("Head") then
+                removeEspForPlayer(player)
+                continue
+            end
+            if not char:FindFirstChild("HumanoidRootPart") then
+                wait(0.1)
+                if not char:FindFirstChild("HumanoidRootPart") then
+                    removeEspForPlayer(player)
+                    continue
+                end
+            end
+            createEspForPlayer(player)
+            local root = char.HumanoidRootPart
+            local head = char.Head
+            local rootPos, onScreen1 = Camera:WorldToViewportPoint(root.Position)
+            local headPos, onScreen2 = Camera:WorldToViewportPoint(head.Position + Vector3.new(0, 2, 0))
+            local footPos, _ = Camera:WorldToViewportPoint(root.Position - Vector3.new(0, 3, 0))
+
+            local obj = ESP.Objects[player]
+            if not obj then continue end
+
+            if not onScreen1 and not onScreen2 then
+                obj.Box.Visible = false
+                obj.Tracer.Visible = false
+                obj.NameTag.Visible = false
+                continue
+            end
+
+            local height = math.abs(headPos.Y - footPos.Y)
+            local width = height / 2
+            obj.Box.Size = Vector2.new(width, height)
+            obj.Box.Position = Vector2.new(headPos.X - width/2, headPos.Y)
+            obj.Box.Visible = true
+
+            obj.Tracer.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+            obj.Tracer.To = Vector2.new(rootPos.X, rootPos.Y)
+            obj.Tracer.Visible = true
+
+            obj.NameTag.Text = player.Name .. " [" .. math.floor((root.Position - Camera.CFrame.Position).Magnitude) .. "m]"
+            obj.NameTag.Position = Vector2.new(headPos.X, headPos.Y - 20)
+            obj.NameTag.Visible = true
+        end
+        for player, obj in pairs(ESP.Objects) do
+            if not Players:FindFirstChild(player.Name) then
+                removeEspForPlayer(player)
+            end
+        end
+    end
+
+    ESP.Updater = RunService.RenderStepped:Connect(function()
+        if ESP.Enabled then updatePositions() end
+    end)
+end
+
+function toggleESP(state)
+    ESP.Enabled = state
+    if state then
+        if not ESP.Updater then updateESP() end
+    else
+        if ESP.Updater then ESP.Updater:Disconnect(); ESP.Updater = nil end
+        for _, obj in pairs(ESP.Objects) do
+            if obj.Box then obj.Box:Remove() end
+            if obj.Tracer then obj.Tracer:Remove() end
+            if obj.NameTag then obj.NameTag:Remove() end
+        end
+        ESP.Objects = {}
+    end
+end
+
+-- ===================== AIMBOT =====================
+function startAimbot()
+    Aimbot.Connection = RunService.RenderStepped:Connect(function()
+        if not Aimbot.Enabled or not Character or not Character:FindFirstChild("HumanoidRootPart") then return end
+        local target = nil
+        local closestDist = math.huge
+        local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y / 2)
+        local fovRadius = Aimbot.FOV / 2
+
+        for _, player in ipairs(Players:GetPlayers()) do
+            if player == LocalPlayer then continue end
+            local char = player.Character
+            if not char or not char:FindFirstChild(Aimbot.Part) then continue end
+            local part = char[Aimbot.Part]
+            local pos, onScreen = Camera:WorldToViewportPoint(part.Position)
+            if onScreen then
+                local dist = (Vector2.new(pos.X, pos.Y) - screenCenter).Magnitude
+                if dist <= fovRadius and dist < closestDist then
+                    closestDist = dist
+                    target = part
+                end
+            end
+        end
+
+        if target then
+            local targetPos = target.Position
+            if Aimbot.Prediction > 0 and target.Velocity then
+                targetPos = targetPos + target.Velocity * Aimbot.Prediction
+            end
+            Camera.CFrame = Camera.CFrame:Lerp(CFrame.new(Camera.CFrame.Position, targetPos), Aimbot.Smoothness)
+        end
+    end)
+end
+
+function toggleAimbot(state)
+    Aimbot.Enabled = state
+    if state then startAimbot() else if Aimbot.Connection then Aimbot.Connection:Disconnect() end end
+end
+
+-- ===================== INFINITE JUMP =====================
+function setInfiniteJump(state)
+    InfiniteJump.Enabled = state
+    if state then
+        InfiniteJump.Connection = UserInputService.JumpRequest:Connect(function()
+            if not Character or not Character:FindFirstChild("Humanoid") then return end
+            local hum = Character.Humanoid
+            local s = hum:GetState()
+            if s == Enum.HumanoidStateType.Landed or s == Enum.HumanoidStateType.Running or s == Enum.HumanoidStateType.Freefall then
+                hum:ChangeState(Enum.HumanoidStateType.Jumping)
+            end
+        end)
+    else
+        if InfiniteJump.Connection then InfiniteJump.Connection:Disconnect() end
+    end
+end
+
+-- ===================== PERSISTENCE =====================
+LocalPlayer.CharacterAdded:Connect(function(char)
+    Character = char
+    wait(0.5)
+    if Flight.Enabled then stopFlight(); startFlight(char) end
+    if Invisible.Enabled then applyInvisibility(char) end
+    if Godmode.Enabled then
+        if Godmode.Connection then Godmode.Connection:Disconnect() end
+        applyGodmode(char)
+    end
+    if char:FindFirstChild("Humanoid") then
+        char.Humanoid.WalkSpeed = WalkSpeed
+        char.Humanoid.JumpPower = JumpPower
+    end
+end)
+
+-- ===================== GUI =====================
+local Window = Rayfield:CreateWindow({
+    Name = "Ryzen Hub Premium",
+    Icon = 4483345998,
+    LoadingTitle = "Ryzen Hub",
+    LoadingSubtitle = "by Ryzen",
+    Theme = "DarkBlue",
+    DisableRayfieldPrompts = false,
+    DisableBuildWarnings = false,
+    ConfigurationSaving = { Enabled = true, FolderName = "RyzenHubPremium", FileName = "Config" },
+    Discord = { Enabled = false },
+    KeySystem = false
+})
+
+-- Movement Tab
+local MovementTab = Window:CreateTab("🏃 Movement")
+MovementTab:CreateSection("✈️ Flight")
+MovementTab:CreateToggle({ Name = "Flight", CurrentValue = false, Callback = function(v)
+    Flight.Enabled = v
+    if v then startFlight(Character) else stopFlight() end
+end })
+MovementTab:CreateSlider({ Name = "Flight Speed", Range = {0, 500}, Increment = 10, Suffix = "studs/s", CurrentValue = 50, Callback = function(v) Flight.Speed = v end })
+
+MovementTab:CreateSection("🏃 Player")
+MovementTab:CreateSlider({ Name = "WalkSpeed", Range = {0, 200}, Increment = 1, Suffix = "studs/s", CurrentValue = 16, Callback = function(v)
+    WalkSpeed = v
+    if Character and Character:FindFirstChild("Humanoid") then Character.Humanoid.WalkSpeed = v end
+end })
+MovementTab:CreateSlider({ Name = "JumpPower", Range = {0, 500}, Increment = 1, Suffix = "power", CurrentValue = 50, Callback = function(v)
+    JumpPower = v
+    if Character and Character:FindFirstChild("Humanoid") then Character.Humanoid.JumpPower = v end
+end })
+MovementTab:CreateToggle({ Name = "Infinite Jump", CurrentValue = false, Callback = function(v) setInfiniteJump(v) end })
+
+-- Visuals Tab
+local VisualTab = Window:CreateTab("👁️ Visuals")
+VisualTab:CreateSection("ESP")
+VisualTab:CreateToggle({ Name = "ESP", CurrentValue = false, Callback = function(v) toggleESP(v) end })
+VisualTab:CreateToggle({ Name = "Boxes", CurrentValue = true, Callback = function(v)
+    for _, obj in pairs(ESP.Objects) do obj.Box.Visible = v and ESP.Enabled end
+end })
+VisualTab:CreateToggle({ Name = "Tracers", CurrentValue = true, Callback = function(v)
+    for _, obj in pairs(ESP.Objects) do obj.Tracer.Visible = v and ESP.Enabled end
+end })
+VisualTab:CreateToggle({ Name = "Names", CurrentValue = true, Callback = function(v)
+    for _, obj in pairs(ESP.Objects) do obj.NameTag.Visible = v and ESP.Enabled end
+end })
+
+VisualTab:CreateSection("Character")
+VisualTab:CreateToggle({ Name = "Invisibility", CurrentValue = false, Callback = function(v)
+    Invisible.Enabled = v
+    if v then applyInvisibility(Character) else removeInvisibility(Character) end
+end })
+VisualTab:CreateToggle({ Name = "Godmode (999k HP)", CurrentValue = false, Callback = function(v)
+    Godmode.Enabled = v
+    if v then applyGodmode(Character) else removeGodmode(Character) end
+end })
+VisualTab:CreateToggle({ Name = "Noclip", CurrentValue = false, Callback = function(v)
+    Noclip = v
+    if Character then
+        for _, part in ipairs(Character:GetDescendants()) do
+            if part:IsA("BasePart") then part.CanCollide = not v end
+        end
+    end
+end })
+
+-- Aimbot Tab
+local AimbotTab = Window:CreateTab("🎯 Aimbot")
+AimbotTab:CreateSection("Aim")
+AimbotTab:CreateToggle({ Name = "Aimbot", CurrentValue = false, Callback = function(v) toggleAimbot(v) end })
+AimbotTab:CreateSlider({ Name = "FOV", Range = {10, 300}, Increment = 5, Suffix = "px", CurrentValue = 100, Callback = function(v) Aimbot.FOV = v end })
+AimbotTab:CreateSlider({ Name = "Smoothness", Range = {0.1, 1}, Increment = 0.1, Suffix = "smooth", CurrentValue = 0.5, Callback = function(v) Aimbot.Smoothness = v end })
+AimbotTab:CreateSlider({ Name = "Prediction", Range = {0, 0.5}, Increment = 0.05, Suffix = "s", CurrentValue = 0.1, Callback = function(v) Aimbot.Prediction = v end })
+AimbotTab:CreateDropdown({ Name = "Target Part", Options = {"Head","HumanoidRootPart","UpperTorso","LowerTorso"}, CurrentOption = "Head", Callback = function(v) Aimbot.Part = v end })
+
+-- Trolling Tab
+local TrollingTab = Window:CreateTab("🎭 Trolling")
+TrollingTab:CreateSection("Target Player")
+local function getPlayerList()
+    local list = {}
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer then table.insert(list, p.Name) end
+    end
+    if #list == 0 then list = {"No players"} end
+    return list
+end
+local targetDropdown = TrollingTab:CreateDropdown({
+    Name = "Select Player", Options = getPlayerList(), CurrentOption = "No players",
+    Callback = function(v) selectedPlayer = (v ~= "No players") and Players:FindFirstChild(v) or nil end
+})
+TrollingTab:CreateButton({ Name = "Refresh List", Callback = function()
+    targetDropdown:Refresh(getPlayerList(), true)
+end })
+TrollingTab:CreateButton({ Name = "Teleport to Player", Callback = function()
+    if not selectedPlayer or not selectedPlayer.Character or not Character or not Character:FindFirstChild("HumanoidRootPart") then return end
+    local root = Character.HumanoidRootPart
+    local targetCF = selectedPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0,3,0)
+    root.CFrame = targetCF
+    RunService.Heartbeat:Wait()
+    root.CFrame = targetCF
+end })
+TrollingTab:CreateButton({ Name = "Spin Fling", Callback = function()
+    if not selectedPlayer or not selectedPlayer.Character or not selectedPlayer.Character:FindFirstChild("HumanoidRootPart") then return end
+    local root = selectedPlayer.Character.HumanoidRootPart
+    local orig = root.CFrame
+    for i = 1, 30 do root.CFrame = orig * CFrame.Angles(0, math.rad(12*i), 0); RunService.RenderStepped:Wait() end
+    root.CFrame = orig
+end })
+TrollingTab:CreateButton({ Name = "Bring All", Callback = function()
+    if not Character or not Character:FindFirstChild("HumanoidRootPart") then return end
+    local myCF = Character.HumanoidRootPart.CFrame
+    for _, p in ipairs(Players:GetPlayers()) do
+        if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+            p.Character.HumanoidRootPart.CFrame = myCF + Vector3.new(math.random(-2,2), 0, math.random(-2,2))
+        end
+    end
+end })
+
+-- Misc Tab
+local MiscTab = Window:CreateTab("🔧 Misc")
+MiscTab:CreateSection("Server")
+MiscTab:CreateButton({ Name = "Rejoin", Callback = function() TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, LocalPlayer) end })
+MiscTab:CreateButton({ Name = "Server Hop", Callback = function() TeleportService:Teleport(game.PlaceId) end })
+MiscTab:CreateSection("Utility")
+MiscTab:CreateToggle({ Name = "Anti-AFK", CurrentValue = false, Callback = function(v)
+    if v then
+        _G.antiAFK = RunService.Stepped:Connect(function()
+            if Character and Character:FindFirstChild("Humanoid") then Character.Humanoid.MoveDirection = Vector3.new(1,0,0) end
+        end)
+    else if _G.antiAFK then _G.antiAFK:Disconnect() end end
+end })
+
+-- Settings Tab
+local SettingsTab = Window:CreateTab("⚙️ Settings")
+SettingsTab:CreateSection("Keybinds")
+SettingsTab:CreateKeybind({ Name = "Flight Toggle", CurrentKeybind = "F", Hold = false, Callback = function() toggleFlight() end })
+SettingsTab:CreateSection("Theme")
+SettingsTab:CreateDropdown({ Name = "Select Theme", Options = {"Default", "DarkBlue", "Light", "Red", "Green", "Purple"}, CurrentOption = "DarkBlue", Callback = function(theme)
+    -- Rayfield не поддерживает смену темы на лету через функцию, поэтому установим тему через флаг (меню пересоздавать не будем, но пока так)
+    -- В реальной имплементации лучше пересоздавать окно, но для стабильности оставим выбор темы в настройках сохранения
+end })
+
+Rayfield:Notify("Ryzen Hub Premium", "Loaded successfully!", 4483345998)
